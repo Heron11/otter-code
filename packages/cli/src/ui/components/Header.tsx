@@ -8,10 +8,22 @@ import type React from 'react';
 import { Box, Text } from 'ink';
 import Gradient from 'ink-gradient';
 import { shortenPath, tildeifyPath } from '@qwen-code/qwen-code-core';
-import { theme } from '../semantic-colors.js';
 import { shortAsciiLogo } from './AsciiArt.js';
 import { getAsciiArtWidth, getCachedStringWidth } from '../utils/textUtils.js';
 import { useTerminalSize } from '../hooks/useTerminalSize.js';
+
+/** Orange → white gradient for the startup ASCII banner (truecolor). */
+const LOGO_GRADIENT_COLORS = [
+  '#FF6A00',
+  '#FF8C00',
+  '#FFB347',
+  '#FFD59E',
+  '#FFFFFF',
+];
+
+const HEADER_ACCENT_ORANGE = '#FF8C00';
+const HEADER_TEXT_LIGHT = '#F5F5F5';
+const HEADER_TEXT_MUTED = '#A3A3A3';
 
 /**
  * Auth display type for the Header component.
@@ -52,7 +64,7 @@ export const Header: React.FC<HeaderProps> = ({
   const infoPanelPaddingX = 1;
   const infoPanelBorderWidth = 2; // left + right border
   const infoPanelChromeWidth = infoPanelBorderWidth + infoPanelPaddingX * 2;
-  const minPathLength = 40; // Minimum readable path length
+  const minPathLength = 20; // Minimum readable path length
   const minInfoPanelWidth = minPathLength + infoPanelChromeWidth;
 
   const availableTerminalWidth = Math.max(
@@ -98,13 +110,6 @@ export const Header: React.FC<HeaderProps> = ({
         ? shortenedPath.slice(0, maxPathLength)
         : shortenedPath;
 
-  // Use theme gradient colors if available, otherwise use text colors (excluding primary)
-  const gradientColors = theme.ui.gradient || [
-    theme.text.secondary,
-    theme.text.link,
-    theme.text.accent,
-  ];
-
   return (
     <Box
       flexDirection="row"
@@ -116,7 +121,7 @@ export const Header: React.FC<HeaderProps> = ({
       {showLogo && (
         <>
           <Box flexShrink={0}>
-            <Gradient colors={gradientColors}>
+            <Gradient colors={LOGO_GRADIENT_COLORS}>
               <Text>{displayLogo}</Text>
             </Gradient>
           </Box>
@@ -129,29 +134,29 @@ export const Header: React.FC<HeaderProps> = ({
       <Box
         flexDirection="column"
         borderStyle="single"
-        borderColor={theme.border.default}
+        borderColor="#262626"
         paddingX={infoPanelPaddingX}
         flexGrow={showLogo ? 0 : 1}
         width={showLogo ? availableInfoPanelWidth : undefined}
       >
-        {/* Title line: >_ Qwen Code (v{version}) */}
+        {/* Title line: >_ Otter Code (v{version}) */}
         <Text>
-          <Text bold color={theme.text.accent}>
-            &gt;_ Qwen Code
+          <Text bold color={HEADER_ACCENT_ORANGE}>
+            &gt;_ Otter Code
           </Text>
-          <Text color={theme.text.secondary}> (v{version})</Text>
+          <Text color={HEADER_TEXT_LIGHT}> (v{version})</Text>
         </Text>
         {/* Empty line for spacing */}
         <Text> </Text>
         {/* Auth and Model line */}
         <Text>
-          <Text color={theme.text.secondary}>{authModelText}</Text>
+          <Text color={HEADER_TEXT_MUTED}>{authModelText}</Text>
           {showModelHint && (
-            <Text color={theme.text.secondary}>{modelHintText}</Text>
+            <Text color={HEADER_TEXT_MUTED}>{modelHintText}</Text>
           )}
         </Text>
         {/* Directory line */}
-        <Text color={theme.text.secondary}>{displayPath}</Text>
+        <Text color={HEADER_TEXT_LIGHT}>{displayPath}</Text>
       </Box>
     </Box>
   );

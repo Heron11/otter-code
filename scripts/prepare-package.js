@@ -156,6 +156,7 @@ const distPackageJson = {
   main: 'cli.js',
   bin: {
     qwen: 'cli.js',
+    otter: 'cli.js',
   },
   files: [
     'cli.js',

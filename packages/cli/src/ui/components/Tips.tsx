@@ -6,8 +6,9 @@
 
 import { useMemo } from 'react';
 import { Box, Text } from 'ink';
-import { theme } from '../semantic-colors.js';
 import { t } from '../../i18n/index.js';
+
+const TIPS_COLOR = '#FF8C00';
 
 type Tip = string | { text: string; weight: number };
 
@@ -16,9 +17,9 @@ const startupTips: Tip[] = [
   'Start a fresh idea with /clear or /new; the previous session stays available in history.',
   'Use /bug to submit issues to the maintainers when something goes off.',
   'Switch auth type quickly with /auth.',
-  'You can run any shell commands from Qwen Code using ! (e.g. !ls).',
+  'You can run any shell commands from Otter Code using ! (e.g. !ls).',
   'Type / to open the command popup; Tab autocompletes slash commands and saved prompts.',
-  'You can resume a previous conversation by running qwen --continue or qwen --resume.',
+  'You can resume a previous conversation by running otter --continue or otter --resume.',
   process.platform === 'win32'
     ? 'You can switch permission mode quickly with Tab or /approval-mode.'
     : 'You can switch permission mode quickly with Shift+Tab or /approval-mode.',
@@ -53,7 +54,7 @@ export const Tips: React.FC = () => {
 
   return (
     <Box marginLeft={2} marginRight={2}>
-      <Text color={theme.text.secondary}>
+      <Text color={TIPS_COLOR}>
         {t('Tips: ')}
         {t(selectedTip)}
       </Text>

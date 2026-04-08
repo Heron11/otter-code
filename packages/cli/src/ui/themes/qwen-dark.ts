@@ -9,22 +9,22 @@ import { darkSemanticColors } from './semantic-tokens.js';
 
 const qwenDarkColors: ColorsTheme = {
   type: 'dark',
-  Background: '#0b0e14',
-  Foreground: '#bfbdb6',
-  LightBlue: '#59C2FF',
-  AccentBlue: '#39BAE6',
-  AccentPurple: '#D2A6FF',
-  AccentCyan: '#95E6CB',
-  AccentGreen: '#AAD94C',
-  AccentYellow: '#FFD700',
+  Background: '#0D0D0D',
+  Foreground: '#F5F5F5',
+  LightBlue: '#FFB347',
+  AccentBlue: '#FF8C00',
+  AccentPurple: '#FF6A00',
+  AccentCyan: '#FFD59E',
+  AccentGreen: '#FFB347',
+  AccentYellow: '#FF8C00',
   AccentRed: '#F26D78',
-  AccentYellowDim: '#8B7530',
+  AccentYellowDim: '#7A4000',
   AccentRedDim: '#8B3A4A',
-  DiffAdded: '#AAD94C',
-  DiffRemoved: '#F26D78',
-  Comment: '#646A71',
-  Gray: '#3D4149',
-  GradientColors: ['#FFD700', '#da7959'],
+  DiffAdded: '#3D2000',
+  DiffRemoved: '#430000',
+  Comment: '#A3A3A3',
+  Gray: '#737373',
+  GradientColors: ['#FF6A00', '#FF8C00', '#FFB347', '#FFD59E', '#FFFFFF'],
 };
 
 export const QwenDark: Theme = new Theme(
@@ -42,7 +42,7 @@ export const QwenDark: Theme = new Theme(
       color: qwenDarkColors.AccentYellow,
     },
     'hljs-literal': {
-      color: qwenDarkColors.AccentPurple,
+      color: qwenDarkColors.AccentCyan,
     },
     'hljs-symbol': {
       color: qwenDarkColors.AccentCyan,
@@ -60,7 +60,7 @@ export const QwenDark: Theme = new Theme(
       color: qwenDarkColors.Foreground,
     },
     'hljs-string': {
-      color: qwenDarkColors.AccentGreen,
+      color: qwenDarkColors.AccentCyan,
     },
     'hljs-title': {
       color: qwenDarkColors.AccentYellow,

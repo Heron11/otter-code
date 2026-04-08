@@ -28,7 +28,6 @@ import type { Key } from '../hooks/useKeypress.js';
 import { useKeypress } from '../hooks/useKeypress.js';
 import { keyMatchers, Command } from '../keyMatchers.js';
 import { cpSlice, cpLen } from '../utils/textUtils.js';
-import { theme } from '../semantic-colors.js';
 
 // ─── Types ──────────────────────────────────────────────────
 
@@ -235,10 +234,8 @@ export const BaseTextInput: React.FC<BaseTextInputProps> = ({
   const [cursorVisualRow, cursorVisualCol] = buffer.visualCursor;
   const scrollVisualRow = buffer.visualScrollRow;
 
-  const resolvedBorderColor = borderColor ?? theme.border.focused;
-  const resolvedPrefix = prefix ?? (
-    <Text color={theme.text.accent}>{'> '}</Text>
-  );
+  const resolvedBorderColor = borderColor ?? '#FF8C00';
+  const resolvedPrefix = prefix ?? <Text color="#FF8C00">{'> '}</Text>;
 
   return (
     <Box
@@ -255,10 +252,10 @@ export const BaseTextInput: React.FC<BaseTextInputProps> = ({
           showCursor ? (
             <Text>
               {chalk.inverse(placeholder.slice(0, 1))}
-              <Text color={theme.text.secondary}>{placeholder.slice(1)}</Text>
+              <Text color="#737373">{placeholder.slice(1)}</Text>
             </Text>
           ) : (
-            <Text color={theme.text.secondary}>{placeholder}</Text>
+            <Text color="#737373">{placeholder}</Text>
           )
         ) : (
           linesToRender.map((lineText, idx) => {
