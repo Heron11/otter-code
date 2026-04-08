@@ -5,7 +5,40 @@
  */
 
 import { type ColorsTheme, Theme } from './theme.js';
-import { darkSemanticColors } from './semantic-tokens.js';
+import type { SemanticColors } from './semantic-tokens.js';
+
+const otterSemanticColors: SemanticColors = {
+  text: {
+    primary: '#F5F5F5',
+    secondary: '#737373',
+    link: '#FF8C00',
+    accent: '#FF6A00',
+    code: '#FFB347',
+  },
+  background: {
+    primary: '#0D0D0D',
+    diff: {
+      added: '#3D2000',
+      removed: '#430000',
+    },
+  },
+  border: {
+    default: '#737373',
+    focused: '#FF8C00',
+  },
+  ui: {
+    comment: '#A3A3A3',
+    symbol: '#FFD59E',
+    gradient: ['#FF6A00', '#FF8C00', '#FFB347', '#FFD59E', '#FFFFFF'],
+  },
+  status: {
+    error: '#F26D78',
+    success: '#FFB347',
+    warning: '#FF8C00',
+    errorDim: '#8B3A4A',
+    warningDim: '#7A4000',
+  },
+};
 
 const qwenDarkColors: ColorsTheme = {
   type: 'dark',
@@ -111,5 +144,5 @@ export const QwenDark: Theme = new Theme(
     },
   },
   qwenDarkColors,
-  darkSemanticColors,
+  otterSemanticColors,
 );

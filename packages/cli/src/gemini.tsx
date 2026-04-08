@@ -55,6 +55,7 @@ import {
 import { start_sandbox } from './utils/sandbox.js';
 import { getStartupWarnings } from './utils/startupWarnings.js';
 import { getUserStartupWarnings } from './utils/userStartupWarnings.js';
+import { syncLmStudioModels } from './utils/syncLmStudioModels.js';
 import { getCliVersion } from './utils/version.js';
 import { writeStderrLine } from './utils/stdioHelpers.js';
 import { computeWindowTitle } from './utils/windowTitle.js';
@@ -414,6 +415,9 @@ export async function main() {
       await runExitCleanup();
       process.exit(0);
     }
+
+    // Sync any newly loaded LM Studio models into settings.json silently.
+    await syncLmStudioModels();
 
     let input = config.getQuestion();
     const startupWarnings = [
