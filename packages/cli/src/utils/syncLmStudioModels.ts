@@ -5,30 +5,42 @@
  */
 
 /**
- * Auto-syncs locally running LM Studio models into ~/.qwen/settings.json
- * on every Otter Code startup. Models already present are left untouched;
- * only new ones are appended. The embedding model is always skipped.
+ * Auto-syncs locally running LM Studio and Atomic Chat models into
+ * ~/.qwen/settings.json on every Otter Code startup.
+ * Models already present are left untouched; only new ones are appended.
+ * Embedding models are always skipped.
  */
 
 import * as fs from 'node:fs';
 import { createDebugLogger } from '@qwen-code/qwen-code-core';
 import { USER_SETTINGS_PATH } from '../config/settings.js';
 
-const debugLogger = createDebugLogger('LMSTUDIO_SYNC');
+const debugLogger = createDebugLogger('MODEL_SYNC');
 
-const LMSTUDIO_BASE_URL = 'http://127.0.0.1:1234/v1';
 const FETCH_TIMEOUT_MS = 2000;
 
-/** Models whose IDs contain these strings are never added (e.g. embeddings). */
+const LOCAL_SERVERS = [
+  {
+    baseUrl: 'http://127.0.0.1:1234/v1',
+    envKey: 'LMSTUDIO_API_KEY',
+    label: 'LM Studio',
+  },
+  {
+    baseUrl: 'http://127.0.0.1:1337/v1',
+    envKey: 'ATOMIC_API_KEY',
+    label: 'Atomic Chat',
+  },
+];
+
 const SKIP_PATTERNS = ['embed', 'embedding'];
 
-function toFriendlyName(id: string): string {
+function toFriendlyName(id: string, label: string): string {
   const base = id.split('/').pop() ?? id;
   return (
     base
       .replace(/[-_.]/g, ' ')
       .replace(/\b\w/g, (c) => c.toUpperCase())
-      .trim() + ' (LM Studio)'
+      .trim() + ` (${label})`
   );
 }
 
@@ -36,11 +48,11 @@ function isLargeModel(id: string): boolean {
   return /[2-9]\d[Bb]|1\d{2,}[Bb]/i.test(id);
 }
 
-async function fetchLmStudioModels(): Promise<string[]> {
+async function fetchModelsFrom(baseUrl: string): Promise<string[]> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
   try {
-    const res = await fetch(`${LMSTUDIO_BASE_URL}/models`, {
+    const res = await fetch(`${baseUrl}/models`, {
       signal: controller.signal,
     });
     if (!res.ok) return [];
@@ -56,14 +68,6 @@ async function fetchLmStudioModels(): Promise<string[]> {
 }
 
 export async function syncLmStudioModels(): Promise<void> {
-  const liveIds = await fetchLmStudioModels();
-  if (liveIds.length === 0) {
-    debugLogger.debug(
-      'LM Studio not reachable or no models loaded — skipping sync.',
-    );
-    return;
-  }
-
   let raw: string;
   try {
     raw = fs.readFileSync(USER_SETTINGS_PATH, 'utf-8');
@@ -85,38 +89,58 @@ export async function syncLmStudioModels(): Promise<void> {
     | undefined;
   const openaiList: Array<Record<string, unknown>> =
     (providers?.['openai'] as Array<Record<string, unknown>>) ?? [];
-
   const existingIds = new Set(openaiList.map((m) => m['id'] as string));
 
-  const newEntries = liveIds
-    .filter((id) => !existingIds.has(id))
-    .map((id) => ({
-      id,
-      name: toFriendlyName(id),
-      envKey: 'LMSTUDIO_API_KEY',
-      baseUrl: `${LMSTUDIO_BASE_URL}`,
-      generationConfig: {
-        timeout: isLargeModel(id) ? 300000 : 120000,
-        maxRetries: 2,
-        samplingParams: {
-          temperature: 0.7,
-          max_tokens: 8192,
-        },
-      },
-    }));
+  const allNewEntries: Array<Record<string, unknown>> = [];
 
-  if (newEntries.length === 0) {
-    debugLogger.debug(
-      'All LM Studio models already in settings — nothing to add.',
-    );
+  for (const server of LOCAL_SERVERS) {
+    const liveIds = await fetchModelsFrom(server.baseUrl);
+    if (liveIds.length === 0) {
+      debugLogger.debug(
+        `${server.label} not reachable or no models loaded — skipping.`,
+      );
+      continue;
+    }
+
+    const newForServer = liveIds
+      .filter((id) => !existingIds.has(id))
+      .map((id) => {
+        existingIds.add(id);
+        return {
+          id,
+          name: toFriendlyName(id, server.label),
+          envKey: server.envKey,
+          baseUrl: server.baseUrl,
+          generationConfig: {
+            timeout: isLargeModel(id) ? 300000 : 120000,
+            maxRetries: 2,
+            samplingParams: {
+              temperature: 0.7,
+              max_tokens: 8192,
+            },
+          },
+        };
+      });
+
+    allNewEntries.push(...newForServer);
+  }
+
+  if (allNewEntries.length === 0) {
+    debugLogger.debug('All local models already in settings — nothing to add.');
     return;
   }
 
   if (!settings['modelProviders']) settings['modelProviders'] = {};
   (settings['modelProviders'] as Record<string, unknown>)['openai'] = [
-    ...newEntries,
+    ...allNewEntries,
     ...openaiList,
   ];
+
+  // Ensure API key placeholders exist in env
+  const env = (settings['env'] as Record<string, string>) ?? {};
+  if (!env['ATOMIC_API_KEY']) env['ATOMIC_API_KEY'] = 'atomic-chat';
+  if (!env['LMSTUDIO_API_KEY']) env['LMSTUDIO_API_KEY'] = 'lm-studio';
+  settings['env'] = env;
 
   try {
     fs.writeFileSync(
@@ -124,12 +148,12 @@ export async function syncLmStudioModels(): Promise<void> {
       JSON.stringify(settings, null, 2),
       'utf-8',
     );
+    const names = allNewEntries.map((e) => e['name'] as string).join(', ');
     debugLogger.debug(
-      `Synced ${newEntries.length} new LM Studio model(s) into settings.json.`,
+      `Synced ${allNewEntries.length} new model(s) into settings.json.`,
     );
-    // Print visible confirmation so users know the sync happened
     process.stderr.write(
-      `✅  Synced ${newEntries.length} LM Studio model(s) into settings: ${newEntries.map((e) => e.name).join(', ')}\n`,
+      `✅  Synced ${allNewEntries.length} LM Studio/Atomic model(s) into settings: ${names}\n`,
     );
   } catch (err) {
     debugLogger.debug(`Failed to write settings.json: ${String(err)}`);
