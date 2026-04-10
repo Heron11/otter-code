@@ -1,5 +1,7 @@
 # Package Overview
 
+> **Otter Code fork:** For end users, installs are documented in the [Otter README](https://github.com/Heron11/otter-code/blob/main/README.md) (GitHub `install-otter.sh`, `otter` CLI). The npm package name `@qwen-code/qwen-code` below describes **upstream Qwen** publishing; this fork’s published binary command is **`otter`**.
+
 This monorepo contains two main packages: `@qwen-code/qwen-code` and `@qwen-code/qwen-code-core`.
 
 ## `@qwen-code/qwen-code`

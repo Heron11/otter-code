@@ -1,60 +1,42 @@
 # JetBrains IDEs
 
-> JetBrains IDEs provide native support for AI coding assistants through the Agent Client Protocol (ACP). This integration allows you to use Qwen Code directly within your JetBrains IDE with real-time code suggestions.
+> JetBrains IDEs can use ACP-based agents. For **Otter Code**, install the **`otter`** CLI from [GitHub](https://github.com/Heron11/otter-code) and register the agent with `otter --acp`. Registry listings may still say “Qwen Code”; use a custom agent if needed.
 
 ### Features
 
-- **Native agent experience**: Integrated AI assistant panel within your JetBrains IDE
-- **Agent Client Protocol**: Full support for ACP enabling advanced IDE interactions
-- **Symbol management**: #-mention files to add them to the conversation context
-- **Conversation history**: Access to past conversations within the IDE
+- **Native agent experience** in the AI Chat tool window
+- **Agent Client Protocol** (ACP)
+- **Symbol management** via #-mentions
+- **Conversation history**
 
 ### Requirements
 
-- JetBrains IDE with ACP support (IntelliJ IDEA, WebStorm, PyCharm, etc.)
-- Qwen Code CLI installed
+- A JetBrains IDE with ACP support
+- Otter Code CLI installed
 
 ### Installation
 
-#### Install from ACP Registry (Recommend)
+#### From ACP registry
 
-1. Install Qwen Code CLI:
-
-   ```bash
-   npm install -g @qwen-code/qwen-code
-   ```
-
-2. Open your JetBrains IDE and navigate to AI Chat tool window.
-
-3. Click **Add ACP Agent**, then click **Install**.
-
-   ![Install](https://img.alicdn.com/imgextra/i4/O1CN01qNdPCW1y8AcqxRgCy_!!6000000006533-2-tps-2490-1788.png)
-
-   For users using JetBrains AI Assistant and/or other ACP agents, click **Install From ACP Registry** in Agents List, then install Qwen Code ACP.
-
-   ![Add from Agents List](https://img.alicdn.com/imgextra/i2/O1CN01ZyOugP26BOKzNgZXx_!!6000000007623-2-tps-479-523.png)
-
-4. The Qwen Code agent should now be available in the AI Assistant panel.
-
-   ![Qwen Code in JetBrains AI Chat](https://img.alicdn.com/imgextra/i4/O1CN013kAVE41XVzbIZOxyv_!!6000000002930-2-tps-3188-2170.png)
-
-#### Manual Install (for older version of JetBrains IDEs)
-
-1. Install Qwen Code CLI:
+1. Install the CLI:
 
    ```bash
-   npm install -g @qwen-code/qwen-code
+   curl -fsSL https://raw.githubusercontent.com/Heron11/otter-code/main/scripts/installation/install-otter.sh | bash
    ```
 
-2. Open your JetBrains IDE and navigate to AI Chat tool window.
+2. In the IDE, open the AI Chat tool window → **Add ACP Agent** → install from registry if an Otter-compatible entry exists.
 
-3. Click the 3-dot menu in the upper-right corner and select **Configure ACP Agent** and configure Qwen Code with the following settings:
+#### Manual configuration
+
+1. Install the CLI as above.
+
+2. **Configure ACP Agent** and use a command that runs `otter` with `--acp`, for example:
 
 ```json
 {
   "agent_servers": {
-    "qwen": {
-      "command": "/path/to/qwen",
+    "otter": {
+      "command": "otter",
       "args": ["--acp"],
       "env": {}
     }
@@ -62,20 +44,18 @@
 }
 ```
 
-4. The Qwen Code agent should now be available in the AI Assistant panel
-
-![Qwen Code in JetBrains AI Chat](https://img.alicdn.com/imgextra/i3/O1CN01ZxYel21y433Ci6eg0_!!6000000006524-2-tps-2774-1494.png)
+Replace `"command"` with an absolute path if `otter` is not on the default PATH used by the IDE.
 
 ## Troubleshooting
 
 ### Agent not appearing
 
-- Run `qwen --version` in terminal to verify installation
-- Ensure your JetBrains IDE version supports ACP
-- Restart your JetBrains IDE
+- Run `otter --version` in a terminal.
+- Confirm the IDE version supports ACP.
+- Restart the IDE.
 
-### Qwen Code not responding
+### Agent not responding
 
-- Check your internet connection
-- Verify CLI works by running `qwen` in terminal
-- [File an issue on GitHub](https://github.com/qwenlm/qwen-code/issues) if the problem persists
+- Check connectivity.
+- Verify `otter` runs interactively in a terminal.
+- Issues: [github.com/Heron11/otter-code/issues](https://github.com/Heron11/otter-code/issues)

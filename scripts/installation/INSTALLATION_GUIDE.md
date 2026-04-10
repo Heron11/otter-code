@@ -1,5 +1,7 @@
 # Installation Guide for Qwen Code with Source Tracking
 
+> **Otter Code users:** prefer the fork installer and docs: [README](https://github.com/Heron11/otter-code/blob/main/README.md) and `scripts/installation/install-otter.sh` (GitHub → build → global `otter`). The scripts below are **upstream Qwen** helpers (`install-qwen-with-source.*`); they are not required for Otter.
+
 This guide describes how to install Node.js and Qwen Code with source information tracking.
 
 ## Overview

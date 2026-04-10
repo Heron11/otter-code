@@ -1,19 +1,13 @@
 # Sandbox
 
-This document explains how to run Qwen Code inside a sandbox to reduce risk when tools execute shell commands or modify files.
+This document explains how to run Otter Code inside a sandbox to reduce risk when tools execute shell commands or modify files.
 
 ## Prerequisites
 
-Before using sandboxing, you need to install and set up Qwen Code:
+Install **Otter Code** (see the [Quickstart](../quickstart) or [repository README](https://github.com/Heron11/otter-code/blob/main/README.md)), then verify:
 
 ```bash
-npm install -g @qwen-code/qwen-code
-```
-
-To verify the installation
-
-```bash
-qwen --version
+otter --version
 ```
 
 ## Overview of sandboxing
@@ -65,11 +59,11 @@ The container sandbox mounts your workspace and your `~/.qwen` directory into th
 
 ```bash
 # Enable sandboxing with command flag
-qwen -s -p "analyze the code structure"
+otter -s -p "analyze the code structure"
 
 # Or enable sandboxing for your shell session (recommended for CI / scripts)
 export QWEN_SANDBOX=true   # true auto-picks a provider (see notes below)
-qwen -p "run the test suite"
+otter -p "run the test suite"
 
 # Configure in settings.json
 {
@@ -199,7 +193,7 @@ RUN apt-get update && \
 Then rebuild the sandbox image:
 
 ```bash
-QWEN_SANDBOX=docker BUILD_SANDBOX=1 qwen -s
+QWEN_SANDBOX=docker BUILD_SANDBOX=1 otter -s
 ```
 
 For more details on customizing the sandbox, see [Customizing the sandbox environment](/developers/tools/sandbox).
@@ -212,7 +206,7 @@ For more details on customizing the sandbox, see [Customizing the sandbox enviro
 ### Debug mode
 
 ```bash
-DEBUG=1 qwen -s -p "debug command"
+DEBUG=1 otter -s -p "debug command"
 ```
 
 **Note:** If you have `DEBUG=true` in a project's `.env` file, it won't affect the CLI due to automatic exclusion. Use `.qwen/.env` files for Qwen Code-specific debug settings.
@@ -221,10 +215,10 @@ DEBUG=1 qwen -s -p "debug command"
 
 ```bash
 # Check environment
-qwen -s -p "run shell command: env | grep SANDBOX"
+otter -s -p "run shell command: env | grep SANDBOX"
 
 # List mounts
-qwen -s -p "run shell command: mount | grep workspace"
+otter -s -p "run shell command: mount | grep workspace"
 ```
 
 ## Security notes

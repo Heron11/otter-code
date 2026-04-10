@@ -69,6 +69,10 @@ Then launch with:
 otter
 ```
 
+## Documentation
+
+Extended guides live in this repo under [`docs/`](./docs/index.md) (Quickstart, overview, IDE integration, troubleshooting). They are aligned with **Otter** install URLs and the **`otter`** CLI; a few internal references may still mirror upstream Qwen wording—use **`otter`** and [github.com/Heron11/otter-code](https://github.com/Heron11/otter-code) as the source of truth.
+
 ## Quick Start
 
 ```bash

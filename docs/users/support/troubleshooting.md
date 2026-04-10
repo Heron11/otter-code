@@ -18,7 +18,7 @@ This guide provides solutions to common issues and debugging tips, including top
   - **Cause:** Node.js could not reach Qwen OAuth endpoints (often a proxy or SSL/TLS trust issue). When available, Qwen Code will also print the underlying error cause (for example: `UNABLE_TO_VERIFY_LEAF_SIGNATURE`).
   - **Solution:**
     - Confirm you can access `https://chat.qwen.ai` from the same machine/network.
-    - If you are behind a proxy, set it via `qwen --proxy <url>` (or the `proxy` setting in `settings.json`).
+    - If you are behind a proxy, set it via `otter --proxy <url>` (or the `proxy` setting in `settings.json`).
     - If your network uses a corporate TLS inspection CA, set `NODE_EXTRA_CA_CERTS` as described above.
 
 - **Issue: Unable to display UI after authentication failure**
@@ -30,11 +30,11 @@ This guide provides solutions to common issues and debugging tips, including top
 
 ## Frequently asked questions (FAQs)
 
-- **Q: How do I update Qwen Code to the latest version?**
-  - A: If you installed it globally via `npm`, update it using the command `npm install -g @qwen-code/qwen-code@latest`. If you compiled it from source, pull the latest changes from the repository, and then rebuild using the command `npm run build`.
+- **Q: How do I update Otter Code to the latest version?**
+  - A: **Recommended:** run the [GitHub installer](https://github.com/Heron11/otter-code/blob/main/README.md#one-command-install-recommended) again — it pulls the latest commit, runs `npm run build`, `npm run bundle`, and reinstalls globally. If you installed from a clone, `git pull`, then `npm run build`, `npm run bundle`, and `npm install -g .` (or `npm link`) from the repo root. If you use a published npm package, use `npm install -g <package>@latest` for that package name.
 
-- **Q: Where are the Qwen Code configuration or settings files stored?**
-  - A: The Qwen Code configuration is stored in two `settings.json` files:
+- **Q: Where are the Otter Code configuration or settings files stored?**
+  - A: Configuration is stored in two `settings.json` files (same layout as upstream Qwen Code):
     1. In your home directory: `~/.qwen/settings.json`.
     2. In your project's root directory: `./.qwen/settings.json`.
 
@@ -50,12 +50,12 @@ This guide provides solutions to common issues and debugging tips, including top
   - **Solution:**
     Either stop the other process that is using the port or configure the MCP server to use a different port.
 
-- **Error: Command not found (when attempting to run Qwen Code with `qwen`).**
+- **Error: Command not found (when attempting to run Otter Code with `otter`).**
   - **Cause:** The CLI is not correctly installed or it is not in your system's `PATH`.
   - **Solution:**
-    The update depends on how you installed Qwen Code:
-    - If you installed `qwen` globally, check that your `npm` global binary directory is in your `PATH`. You can update using the command `npm install -g @qwen-code/qwen-code@latest`.
-    - If you are running `qwen` from source, ensure you are using the correct command to invoke it (e.g. `node packages/cli/dist/index.js ...`). To update, pull the latest changes from the repository, and then rebuild using the command `npm run build`.
+    Depends how you installed Otter Code:
+    - **GitHub installer:** Re-run the [curl install script](https://raw.githubusercontent.com/Heron11/otter-code/main/scripts/installation/install-otter.sh) or add your npm global `bin` directory to `PATH`.
+    - **From source:** Use `otter` after `npm link` or `npm install -g .` from the repo (with `npm run bundle` first). Invoke from the repo with `node dist/cli.js` if needed.
 
 - **Error: `MODULE_NOT_FOUND` or import errors.**
   - **Cause:** Dependencies are not installed correctly, or the project hasn't been built.
@@ -71,7 +71,7 @@ This guide provides solutions to common issues and debugging tips, including top
 - **Qwen Code is not running in interactive mode in "CI" environments**
   - **Issue:** Qwen Code does not enter interactive mode (no prompt appears) if an environment variable starting with `CI_` (e.g. `CI_TOKEN`) is set. This is because the `is-in-ci` package, used by the underlying UI framework, detects these variables and assumes a non-interactive CI environment.
   - **Cause:** The `is-in-ci` package checks for the presence of `CI`, `CONTINUOUS_INTEGRATION`, or any environment variable with a `CI_` prefix. When any of these are found, it signals that the environment is non-interactive, which prevents the CLI from starting in its interactive mode.
-  - **Solution:** If the `CI_` prefixed variable is not needed for the CLI to function, you can temporarily unset it for the command. e.g. `env -u CI_TOKEN qwen`
+    - **Solution:** If the `CI_` prefixed variable is not needed for the CLI to function, you can temporarily unset it for the command. e.g. `env -u CI_TOKEN otter`
 
 - **DEBUG mode not working from project .env file**
   - **Issue:** Setting `DEBUG=true` in a project's `.env` file doesn't enable debug mode for the CLI.
@@ -120,4 +120,4 @@ The Qwen Code uses specific exit codes to indicate the reason for termination. T
 
 ## Existing GitHub Issues similar to yours or creating new Issues
 
-If you encounter an issue that was not covered here in this _Troubleshooting guide_, consider searching the Qwen Code [Issue tracker on GitHub](https://github.com/QwenLM/qwen-code/issues). If you can't find an issue similar to yours, consider creating a new GitHub Issue with a detailed description. Pull requests are also welcome!
+If your issue is not covered here, search [Otter Code issues](https://github.com/Heron11/otter-code/issues) (this fork) or [upstream Qwen Code issues](https://github.com/QwenLM/qwen-code/issues) for related reports.

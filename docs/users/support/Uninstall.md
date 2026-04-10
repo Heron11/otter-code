@@ -1,42 +1,49 @@
 # Uninstall
 
-Your uninstall method depends on how you ran the CLI. Follow the instructions for either npx or a global npm installation.
+Your uninstall method depends on how you installed the CLI.
 
 ## Method 1: Using npx
 
-npx runs packages from a temporary cache without a permanent installation. To "uninstall" the CLI, you must clear this cache, which will remove qwen-code and any other packages previously executed with npx.
+npx runs packages from a temporary cache without a permanent installation. To clear packages run via npx, remove the npx cache folder inside your npm cache.
 
-The npx cache is a directory named `_npx` inside your main npm cache folder. You can find your npm cache path by running `npm config get cache`.
-
-**For macOS / Linux**
+**macOS / Linux**
 
 ```bash
-# The path is typically ~/.npm/_npx
 rm -rf "$(npm config get cache)/_npx"
 ```
 
-**For Windows**
-
-_Command Prompt_
+**Windows** — Command Prompt:
 
 ```cmd
-:: The path is typically %LocalAppData%\npm-cache\_npx
 rmdir /s /q "%LocalAppData%\npm-cache\_npx"
 ```
 
-_PowerShell_
+**Windows** — PowerShell:
 
 ```powershell
-# The path is typically $env:LocalAppData\npm-cache\_npx
 Remove-Item -Path (Join-Path $env:LocalAppData "npm-cache\_npx") -Recurse -Force
 ```
 
-## Method 2: Using npm (Global Install)
+## Method 2: Global npm install
 
-If you installed the CLI globally (e.g. `npm install -g @qwen-code/qwen-code`), use the `npm uninstall` command with the `-g` flag to remove it.
+If you installed with **`npm install -g .`** from a clone, the global name is the `name` field in the root `package.json` (often `@qwen-code/qwen-code` until you publish under another scope). Check with:
+
+```bash
+npm list -g --depth=0
+```
+
+Then uninstall, for example:
 
 ```bash
 npm uninstall -g @qwen-code/qwen-code
 ```
 
-This command completely removes the package from your system.
+## GitHub installer
+
+If you used [install-otter.sh](https://raw.githubusercontent.com/Heron11/otter-code/main/scripts/installation/install-otter.sh), you can run:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Heron11/otter-code/main/scripts/installation/install-otter.sh | bash -s -- --uninstall
+```
+
+That removes the global CLI and can optionally delete the checkout under `~/.local/share/otter-code` (when run interactively).

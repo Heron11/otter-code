@@ -1,72 +1,62 @@
 # Zed Editor
 
-> Zed Editor provides native support for AI coding assistants through the Agent Client Protocol (ACP). This integration allows you to use Qwen Code directly within Zed's interface with real-time code suggestions.
+> Zed supports AI assistants via the Agent Client Protocol (ACP). This page describes integrating the **Otter Code** CLI (`otter`). The Zed registry may still list “Qwen Code”; if you use this fork, install the CLI from [GitHub](https://github.com/Heron11/otter-code) and point the agent at the **`otter`** binary.
 
 ![Zed Editor Overview](https://img.alicdn.com/imgextra/i1/O1CN01aAhU311GwEoNh27FP_!!6000000000686-2-tps-3024-1898.png)
 
 ### Features
 
-- **Native agent experience**: Integrated AI assistant panel within Zed's interface
-- **Agent Client Protocol**: Full support for ACP enabling advanced IDE interactions
-- **File management**: @-mention files to add them to the conversation context
-- **Conversation history**: Access to past conversations within Zed
+- **Native agent experience**: Integrated AI assistant panel within Zed
+- **Agent Client Protocol**: ACP for IDE interactions
+- **File management**: @-mention files for context
+- **Conversation history**: Past conversations in Zed
 
 ### Requirements
 
-- Zed Editor (latest version recommended)
-- Qwen Code CLI installed
+- Zed Editor (latest recommended)
+- Otter Code CLI installed — [one-line install](https://github.com/Heron11/otter-code#installation) or build from source
 
 ### Installation
 
-#### Install from ACP Registry (Recommend)
+#### Install from ACP Registry
 
-1. Install Qwen Code CLI:
+1. Install the CLI (example — GitHub installer):
 
-```bash
-npm install -g @qwen-code/qwen-code
-```
+   ```bash
+   curl -fsSL https://raw.githubusercontent.com/Heron11/otter-code/main/scripts/installation/install-otter.sh | bash
+   ```
 
-2. Download and install [Zed Editor](https://zed.dev/)
+2. Install [Zed](https://zed.dev/).
 
-3. In Zed, click the **settings button** in the top right corner, select **"Add agent"**, choose **"Install from Registry"**, find **Qwen Code**, then click **Install**.
+3. In Zed: **settings → Add agent → Install from Registry**. If an “Otter” entry is not listed, use **Create a custom agent** below.
 
-   ![ACP Registry](https://img.alicdn.com/imgextra/i4/O1CN0186ybL61EeG35fHFjy_!!6000000000376-2-tps-3056-1705.png)
+#### Manual install (custom agent)
 
-   ![Qwen Code ACP Installed](https://img.alicdn.com/imgextra/i1/O1CN01OXHhoR1J8irAvjs8F_!!6000000000984-2-tps-1247-703.png)
+1. Install the CLI as above.
 
-#### Manual Install
-
-1. Install Qwen Code CLI:
-
-```bash
-npm install -g @qwen-code/qwen-code
-```
-
-2. Download and install [Zed Editor](https://zed.dev/)
-
-3. In Zed, click the **settings button** in the top right corner, select **"Add agent"**, choose **"Create a custom agent"**, and add the following configuration:
+2. In Zed, **Add agent → Create a custom agent** with:
 
 ```json
-"Qwen Code": {
+"Otter Code": {
   "type": "custom",
-  "command": "qwen",
+  "command": "otter",
   "args": ["--acp"],
   "env": {}
 }
 ```
 
-![Qwen Code Integration](https://img.alicdn.com/imgextra/i1/O1CN013s61L91dSE1J7MTgO_!!6000000003734-2-tps-2592-1234.png)
+Use `"command": "otter"` if `otter` is on your `PATH`, or an absolute path to the binary.
 
 ## Troubleshooting
 
 ### Agent not appearing
 
-- Run `qwen --version` in terminal to verify installation
-- Check that the JSON configuration is valid
-- Restart Zed Editor
+- Run `otter --version` in a terminal.
+- Validate JSON configuration.
+- Restart Zed.
 
-### Qwen Code not responding
+### Agent not responding
 
-- Check your internet connection
-- Verify CLI works by running `qwen` in terminal
-- [File an issue on GitHub](https://github.com/qwenlm/qwen-code/issues) if the problem persists
+- Check network connectivity.
+- Run `otter` alone to verify the CLI.
+- Report issues: [github.com/Heron11/otter-code/issues](https://github.com/Heron11/otter-code/issues)

@@ -1,5 +1,7 @@
 # Qwen Code Execution and Deployment
 
+> **Otter Code fork:** Typical users install from [github.com/Heron11/otter-code](https://github.com/Heron11/otter-code) via `install-otter.sh` or a local build; the CLI command is **`otter`**. The NPM-based flow below matches **upstream Qwen**.
+
 This document describes how to run Qwen Code and explains the deployment architecture that Qwen Code uses.
 
 ## Running Qwen Code
@@ -10,7 +12,7 @@ There are several ways to run Qwen Code. The option you choose depends on how yo
 
 ### 1. Standard installation (Recommended for typical users)
 
-This is the recommended way for end-users to install Qwen Code. It involves downloading the Qwen Code package from the NPM registry.
+**Upstream Qwen:** install from the npm registry.
 
 - **Global install:**
 
@@ -30,6 +32,8 @@ This is the recommended way for end-users to install Qwen Code. It involves down
   # Execute the latest version from NPM without a global install
   npx @qwen-code/qwen-code
   ```
+
+**Otter Code:** use the [README installer](https://github.com/Heron11/otter-code/blob/main/README.md) or `git clone` + `npm run build` + `npm run bundle` + `npm install -g .`, then run **`otter`**.
 
 ---
 

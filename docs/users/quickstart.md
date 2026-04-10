@@ -1,8 +1,8 @@
 # Quickstart
 
-> 👏 Welcome to Qwen Code!
+> Welcome to Otter Code!
 
-This quickstart guide will have you using AI-powered coding assistance in just a few minutes. By the end, you'll understand how to use Qwen Code for common development tasks.
+This quickstart will get you to productive AI-assisted coding in a few minutes. The CLI command is **`otter`** (see the [repository README](https://github.com/Heron11/otter-code/blob/main/README.md) for install options).
 
 ## Before you begin
 
@@ -10,127 +10,105 @@ Make sure you have:
 
 - A **terminal** or command prompt open
 - A code project to work with
-- A [Qwen Code](https://chat.qwen.ai/auth?mode=register) account
+- A [Qwen account](https://chat.qwen.ai/auth?mode=register) if you plan to use **Qwen OAuth** (recommended free tier)
 
-## Step 1: Install Qwen Code
+## Step 1: Install Otter Code
 
-To install Qwen Code, use one of the following methods:
+### Quick install (recommended)
 
-### Quick Install (Recommended)
-
-**Linux / macOS**
+**Linux / macOS** — downloads the installer from GitHub, clones/updates the repo under `~/.local/share/otter-code`, builds, and installs `otter` globally (no public npm package required):
 
 ```sh
-curl -fsSL https://qwen-code-assets.oss-cn-hangzhou.aliyuncs.com/installation/install-qwen.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Heron11/otter-code/main/scripts/installation/install-otter.sh | bash
 ```
 
-**Windows (Run as Administrator CMD)**
-
-```sh
-curl -fsSL -o %TEMP%\install-qwen.bat https://qwen-code-assets.oss-cn-hangzhou.aliyuncs.com/installation/install-qwen.bat && %TEMP%\install-qwen.bat
-```
+**Windows:** Use [WSL](https://learn.microsoft.com/en-us/windows/wsl/) and run the command above, or clone [Heron11/otter-code](https://github.com/Heron11/otter-code) and follow **Build from source** below.
 
 > [!note]
 >
-> It's recommended to restart your terminal after installation to ensure environment variables take effect.
+> Restart your terminal after installation if `otter` is not on your `PATH`.
 
-### Manual Installation
+### Manual installation
 
-**Prerequisites**
+**Prerequisites:** Node.js 20 or later — [nodejs.org](https://nodejs.org/en/download).
 
-Make sure you have Node.js 20 or later installed. Download it from [nodejs.org](https://nodejs.org/en/download).
-
-**NPM**
+**From a git clone** (typical for contributors):
 
 ```bash
-npm install -g @qwen-code/qwen-code@latest
+git clone https://github.com/Heron11/otter-code.git
+cd otter-code
+npm install
+npm run build
+npm run bundle
+npm link
 ```
 
-**Homebrew (macOS, Linux)**
+The `otter` binary uses the bundled `dist/cli.js`. After code changes, run **`npm run bundle`** (not only `npm run build`) so the CLI matches your tree.
+
+**Optional — global install from a clone directory**
 
 ```bash
-brew install qwen-code
+npm install -g .
 ```
+
+Use the same package name for removal as shown by `npm list -g --depth=0` (often `@qwen-code/qwen-code` until you publish under a custom scope).
 
 ## Step 2: Log in to your account
 
-Qwen Code requires an account to use. When you start an interactive session with the `qwen` command, you'll be prompted to log in:
+Otter Code needs authentication. In an interactive session started with **`otter`**, you will be prompted to sign in:
 
 ```bash
-# You'll be prompted to log in on first use
-qwen
+otter
 ```
 
 ```bash
-# Follow the prompts to log in with your account
 /auth
 ```
 
-Select `Qwen OAuth`, log in to your account and follow the prompts to confirm. Once logged in, your credentials are stored and you won't need to log in again.
+Select **Qwen OAuth**, complete the browser flow, and confirm. Credentials are stored locally.
 
 > [!note]
 >
-> When you first authenticate Qwen Code with your Qwen account, a workspace called ".qwen" is automatically created for you. This workspace provides centralized cost tracking and management for all Qwen Code usage in your organization.
+> Authenticating with Qwen creates a **`.qwen`** workspace for usage tracking (paths and behavior match upstream Qwen Code).
 
 > [!tip]
 >
-> You can also configure authentication directly from the terminal without starting a session by running `qwen auth`. Use `qwen auth status` to check your current configuration at any time. See the [Authentication](./configuration/auth) page for details.
+> You can also run **`otter auth`** and **`otter auth status`** from the terminal without a full session. See [Authentication](./configuration/auth).
 
 ## Step 3: Start your first session
 
-Open your terminal in any project directory and start Qwen Code:
-
 ```bash
-# optiona
 cd /path/to/your/project
-# start qwen
-qwen
+otter
 ```
 
-You'll see the Qwen Code welcome screen with your session information, recent conversations, and latest updates. Type `/help` for available commands.
+You should see the welcome UI. Type `/help` for slash commands.
 
-## Chat with Qwen Code
+## Chat with Otter Code
 
 ### Ask your first question
-
-Qwen Code will analyze your files and provide a summary. You can also ask more specific questions:
 
 ```
 explain the folder structure
 ```
 
-You can also ask Qwen Code about its own capabilities:
-
 ```
-what can Qwen Code do?
+what can Otter Code do?
 ```
 
 > [!note]
 >
-> Qwen Code reads your files as needed - you don't have to manually add context. Qwen Code also has access to its own documentation and can answer questions about its features and capabilities.
+> Otter Code reads files as needed and can explain its own features.
 
 ### Make your first code change
-
-Now let's make Qwen Code do some actual coding. Try a simple task:
 
 ```
 add a hello world function to the main file
 ```
 
-Qwen Code will:
+Otter Code will propose changes and ask before editing.
 
-1. Find the appropriate file
-2. Show you the proposed changes
-3. Ask for your approval
-4. Make the edit
-
-> [!note]
->
-> Qwen Code always asks for permission before modifying files. You can approve individual changes or enable "Accept all" mode for a session.
-
-### Use Git with Qwen Code
-
-Qwen Code makes Git operations conversational:
+### Use Git with Otter Code
 
 ```
 what files have I changed?
@@ -140,66 +118,35 @@ what files have I changed?
 commit my changes with a descriptive message
 ```
 
-You can also prompt for more complex Git operations:
-
 ```
 create a new branch called feature/quickstart
 ```
 
-```
-show me the last 5 commits
-```
-
-```
-help me resolve merge conflicts
-```
-
 ### Fix a bug or add a feature
 
-Qwen Code is proficient at debugging and feature implementation.
+Describe what you want in natural language; Otter Code will locate code, propose changes, and run tests when available.
 
-Describe what you want in natural language:
+### Other workflows
 
-```
-add input validation to the user registration form
-```
-
-Or fix existing issues:
-
-```
-there's a bug where users can submit empty forms - fix it
-```
-
-Qwen Code will:
-
-- Locate the relevant code
-- Understand the context
-- Implement a solution
-- Run tests if available
-
-### Test out other common workflows
-
-There are a number of ways to work with Qwen Code:
-
-**Refactor code**
+**Refactor**
 
 ```
 refactor the authentication module to use async/await instead of callbacks
 ```
 
-**Write tests**
+**Tests**
 
 ```
 write unit tests for the calculator functions
 ```
 
-**Update documentation**
+**Docs**
 
 ```
 update the README with installation instructions
 ```
 
-**Code review**
+**Review**
 
 ```
 review my changes and suggest improvements
@@ -207,67 +154,37 @@ review my changes and suggest improvements
 
 > [!tip]
 >
-> **Remember**: Qwen Code is your AI pair programmer. Talk to it like you would a helpful colleague - describe what you want to achieve, and it will help you get there.
+> Describe outcomes clearly, like you would to a teammate.
 
 ## Essential commands
 
-Here are the most important commands for daily use:
+| Command             | What it does                       | Example              |
+| ------------------- | ---------------------------------- | -------------------- |
+| `otter`             | Start Otter Code                   | `otter`              |
+| `/auth`             | Change authentication (in session) | `/auth`              |
+| `otter auth`        | Configure auth from the terminal   | `otter auth`         |
+| `otter auth status` | Show auth status                   | `otter auth status`  |
+| `/help`             | Help for slash commands            | `/help` or `/?`      |
+| `/compress`         | Summarize history to save tokens   | `/compress`          |
+| `/clear`            | Clear screen                       | `/clear` (`Ctrl+L`)  |
+| `/theme`            | Change theme                       | `/theme`             |
+| `/language`         | UI / output language               | `/language ui zh-CN` |
+| `/quit`             | Exit                               | `/quit` or `/exit`   |
 
-| Command               | What it does                                     | Example                       |
-| --------------------- | ------------------------------------------------ | ----------------------------- |
-| `qwen`                | start Qwen Code                                  | `qwen`                        |
-| `/auth`               | Change authentication method (in session)        | `/auth`                       |
-| `qwen auth`           | Configure authentication from the terminal       | `qwen auth`                   |
-| `qwen auth status`    | Check current authentication status              | `qwen auth status`            |
-| `/help`               | Display help information for available commands  | `/help` or `/?`               |
-| `/compress`           | Replace chat history with summary to save Tokens | `/compress`                   |
-| `/clear`              | Clear terminal screen content                    | `/clear` (shortcut: `Ctrl+L`) |
-| `/theme`              | Change Qwen Code visual theme                    | `/theme`                      |
-| `/language`           | View or change language settings                 | `/language`                   |
-| → `ui [language]`     | Set UI interface language                        | `/language ui zh-CN`          |
-| → `output [language]` | Set LLM output language                          | `/language output Chinese`    |
-| `/quit`               | Exit Qwen Code immediately                       | `/quit` or `/exit`            |
+See the [CLI reference](./features/commands) for the full list (some examples there may still say `qwen`; use `otter` in this fork).
 
-See the [CLI reference](./features/commands) for a complete list of commands.
+## Pro tips
 
-## Pro tips for beginners
+**Be specific** — e.g. “fix the login bug where the screen stays blank after wrong credentials” instead of “fix the bug”.
 
-**Be specific with your requests**
+**Break work into steps** — multi-step prompts work well.
 
-- Instead of: "fix the bug"
-- Try: "fix the login bug where users see a blank screen after entering wrong credentials"
+**Explore first** — e.g. `analyze the database schema` before large refactors.
 
-**Use step-by-step instructions**
-
-- Break complex tasks into steps:
-
-```
-1. create a new database table for user profiles
-2. create an API endpoint to get and update user profiles
-3. build a webpage that allows users to see and edit their information
-```
-
-**Let Qwen Code explore first**
-
-- Before making changes, let Qwen Code understand your code:
-
-```
-analyze the database schema
-```
-
-```
-build a dashboard showing products that are most frequently returned by our UK customers
-```
-
-**Save time with shortcuts**
-
-- Press `?` to see all available keyboard shortcuts
-- Use Tab for command completion
-- Press ↑ for command history
-- Type `/` to see all slash commands
+**Shortcuts** — `?` for keys, Tab for completion, ↑ for history, `/` for slash commands.
 
 ## Getting help
 
-- **In Qwen Code**: Type `/help` or ask "how do I..."
-- **Documentation**: You're here! Browse other guides
-- **Community**: Join our [GitHub Discussion](https://github.com/QwenLM/qwen-code/discussions) for tips and support
+- **In the app:** `/help` or ask how to do something.
+- **Docs:** This site and the [GitHub README](https://github.com/Heron11/otter-code/blob/main/README.md).
+- **Issues:** [github.com/Heron11/otter-code/issues](https://github.com/Heron11/otter-code/issues).
