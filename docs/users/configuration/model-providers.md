@@ -12,7 +12,7 @@ Use `modelProviders` to declare curated model lists per auth type that the `/mod
 
 > [!warning]
 >
-> **Duplicate model IDs within the same authType:** Defining multiple models with the same `id` under a single `authType` (e.g., two entries with `"id": "gpt-4o"` in `openai`) is currently not supported. If duplicates exist, **the first occurrence wins** and subsequent duplicates are skipped with a warning. Note that the `id` field is used both as the configuration identifier and as the actual model name sent to the API, so using unique IDs (e.g., `gpt-4o-creative`, `gpt-4o-balanced`) is not a viable workaround. This is a known limitation that we plan to address in a future release.
+> **Duplicate model IDs within the same authType:** If you define multiple entries with the same `id` under one `authType` (e.g., two `"id": "qwen"` rows in `openai` for different backends), each row is kept. The registry assigns unique keys in order: `qwen`, `qwen1`, `qwen2`, … The **first** row keeps the bare `id`; later duplicates get numeric suffixes. The **API** still receives the original model name (`qwen`) for every duplicate: the runtime stores that in optional `apiModelId` when the registry key differs from the server model id. You can also set `apiModelId` yourself when `id` is a display alias.
 
 ## Configuration Examples by Auth Type
 

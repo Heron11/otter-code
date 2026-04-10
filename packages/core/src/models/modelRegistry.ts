@@ -85,24 +85,43 @@ export class ModelRegistry {
 
   /**
    * Register models for an authType.
-   * If multiple models have the same id, the first one takes precedence.
+   * Duplicate `id` values get disambiguated keys (`qwen`, `qwen1`, `qwen2`, …);
+   * the API still receives the original name via {@link ModelConfig.apiModelId} when needed.
    */
   private registerAuthTypeModels(
     authType: AuthType,
     models: ModelConfig[],
   ): void {
     const modelMap = new Map<string, ResolvedModelConfig>();
+    const usedRegistryIds = new Set<string>();
 
     for (const config of models) {
-      // Skip if a model with the same id is already registered (first one wins)
-      if (modelMap.has(config.id)) {
-        debugLogger.warn(
-          `Duplicate model id "${config.id}" for authType "${authType}". Using the first registered config.`,
+      const apiModelName = config.apiModelId ?? config.id;
+      let registryId = config.id;
+      if (usedRegistryIds.has(registryId)) {
+        let n = 1;
+        let candidate = `${config.id}${n}`;
+        while (usedRegistryIds.has(candidate)) {
+          n++;
+          candidate = `${config.id}${n}`;
+        }
+        registryId = candidate;
+        debugLogger.debug(
+          `Duplicate model id "${config.id}" for authType "${authType}" — registering as "${registryId}".`,
         );
-        continue;
       }
-      const resolved = this.resolveModelConfig(config, authType);
-      modelMap.set(config.id, resolved);
+      usedRegistryIds.add(registryId);
+
+      const needsExplicitApiModelId =
+        registryId !== apiModelName || config.apiModelId !== undefined;
+      const merged: ModelConfig = {
+        ...config,
+        id: registryId,
+        apiModelId: needsExplicitApiModelId ? apiModelName : undefined,
+      };
+
+      const resolved = this.resolveModelConfig(merged, authType);
+      modelMap.set(registryId, resolved);
     }
 
     this.modelsByAuthType.set(authType, modelMap);
@@ -116,20 +135,23 @@ export class ModelRegistry {
     const models = this.modelsByAuthType.get(authType);
     if (!models) return [];
 
-    return Array.from(models.values()).map((model) => ({
-      id: model.id,
-      label: model.name,
-      description: model.description,
-      capabilities: model.capabilities,
-      authType: model.authType,
-      isVision: model.capabilities?.vision ?? false,
-      contextWindowSize:
-        model.generationConfig.contextWindowSize ?? tokenLimit(model.id),
-      modalities:
-        model.generationConfig.modalities ?? defaultModalities(model.id),
-      baseUrl: model.baseUrl,
-      envKey: model.envKey,
-    }));
+    return Array.from(models.values()).map((model) => {
+      const logicalId = model.apiModelId ?? model.id;
+      return {
+        id: model.id,
+        label: model.name,
+        description: model.description,
+        capabilities: model.capabilities,
+        authType: model.authType,
+        isVision: model.capabilities?.vision ?? false,
+        contextWindowSize:
+          model.generationConfig.contextWindowSize ?? tokenLimit(logicalId),
+        modalities:
+          model.generationConfig.modalities ?? defaultModalities(logicalId),
+        baseUrl: model.baseUrl,
+        envKey: model.envKey,
+      };
+    });
   }
 
   /**

@@ -151,8 +151,12 @@ install_from_git() {
     }
   fi
 
-  log_info "Installing dependencies (npm install)…"
-  (cd "${OTTER_HOME}" && npm install)
+  log_info "Installing dependencies (npm install --ignore-scripts)…"
+  log_info "Skipping lifecycle scripts so install does not run prepare (build+bundle) twice."
+  (cd "${OTTER_HOME}" && npm install --ignore-scripts)
+
+  log_info "Running core postinstall (ripgrep permissions, etc.)…"
+  (cd "${OTTER_HOME}/packages/core" && node scripts/postinstall.js) || true
 
   log_info "Building…"
   (cd "${OTTER_HOME}" && npm run build)

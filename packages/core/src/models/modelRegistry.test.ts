@@ -321,7 +321,7 @@ describe('ModelRegistry', () => {
   });
 
   describe('duplicate model id handling', () => {
-    it('should skip duplicate model ids and use first registered config', () => {
+    it('should suffix duplicate model ids and preserve API model name', () => {
       const registry = new ModelRegistry({
         openai: [
           { id: 'gpt-4', name: 'GPT-4 First', description: 'First config' },
@@ -331,12 +331,18 @@ describe('ModelRegistry', () => {
       });
 
       const models = registry.getModelsForAuthType(AuthType.USE_OPENAI);
-      expect(models.length).toBe(2);
+      expect(models.length).toBe(3);
 
-      const gpt4 = registry.getModel(AuthType.USE_OPENAI, 'gpt-4');
-      expect(gpt4).toBeDefined();
-      expect(gpt4?.name).toBe('GPT-4 First');
-      expect(gpt4?.description).toBe('First config');
+      const first = registry.getModel(AuthType.USE_OPENAI, 'gpt-4');
+      expect(first).toBeDefined();
+      expect(first?.name).toBe('GPT-4 First');
+      expect(first?.description).toBe('First config');
+      expect(first?.apiModelId).toBeUndefined();
+
+      const second = registry.getModel(AuthType.USE_OPENAI, 'gpt-41');
+      expect(second).toBeDefined();
+      expect(second?.name).toBe('GPT-4 Second');
+      expect(second?.apiModelId).toBe('gpt-4');
     });
 
     it('should handle multiple duplicate ids in same authType', () => {
@@ -351,13 +357,22 @@ describe('ModelRegistry', () => {
       });
 
       const models = registry.getModelsForAuthType(AuthType.USE_OPENAI);
-      expect(models.length).toBe(3);
+      expect(models.length).toBe(5);
 
       expect(registry.getModel(AuthType.USE_OPENAI, 'model-a')?.name).toBe(
         'Model A First',
       );
+      expect(registry.getModel(AuthType.USE_OPENAI, 'model-a1')?.name).toBe(
+        'Model A Second',
+      );
+      expect(
+        registry.getModel(AuthType.USE_OPENAI, 'model-a1')?.apiModelId,
+      ).toBe('model-a');
       expect(registry.getModel(AuthType.USE_OPENAI, 'model-b')?.name).toBe(
         'Model B First',
+      );
+      expect(registry.getModel(AuthType.USE_OPENAI, 'model-b1')?.name).toBe(
+        'Model B Second',
       );
       expect(registry.getModel(AuthType.USE_OPENAI, 'model-c')?.name).toBe(
         'Model C',
@@ -524,9 +539,12 @@ describe('ModelRegistry', () => {
       });
 
       const models = registry.getModelsForAuthType(AuthType.USE_OPENAI);
-      expect(models.length).toBe(1);
+      expect(models.length).toBe(2);
       expect(registry.getModel(AuthType.USE_OPENAI, 'model-a')?.name).toBe(
         'Model A First',
+      );
+      expect(registry.getModel(AuthType.USE_OPENAI, 'model-a1')?.name).toBe(
+        'Model A Second',
       );
     });
   });

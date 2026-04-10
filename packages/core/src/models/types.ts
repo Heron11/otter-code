@@ -47,6 +47,11 @@ export type ModelGenerationConfig = Pick<
 export interface ModelConfig {
   /** Unique model ID within authType (e.g., "qwen-coder", "gpt-4-turbo") */
   id: string;
+  /**
+   * Model name sent to the API. Defaults to `id` when omitted.
+   * Set when `id` is a disambiguated key (e.g. `qwen1`) but the backend expects `qwen`.
+   */
+  apiModelId?: string;
   /** Display name (defaults to id) */
   name?: string;
   /** Model description */

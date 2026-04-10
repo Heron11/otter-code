@@ -141,9 +141,10 @@ export function resolveModelConfig(
   const modelLayers: Array<ConfigLayer<string>> = [];
 
   if (authType && modelProvider) {
+    const apiModelName = modelProvider.apiModelId ?? modelProvider.id;
     modelLayers.push(
       layer(
-        modelProvider.id,
+        apiModelName,
         modelProvidersSource(authType, modelProvider.id, 'model.id'),
       ),
     );
