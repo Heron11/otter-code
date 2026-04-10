@@ -61,6 +61,7 @@ vi.mock('./auth/useAuth.js');
 vi.mock('./hooks/useEditorSettings.js');
 vi.mock('./hooks/useSettingsCommand.js');
 vi.mock('./hooks/useModelCommand.js');
+vi.mock('./hooks/useAddProviderCommand.js');
 vi.mock('./hooks/slashCommandProcessor.js');
 vi.mock('./hooks/useTerminalSize.js', () => ({
   useTerminalSize: vi.fn(() => ({ columns: 80, rows: 24 })),
@@ -107,6 +108,7 @@ import { useAuthCommand } from './auth/useAuth.js';
 import { useEditorSettings } from './hooks/useEditorSettings.js';
 import { useSettingsCommand } from './hooks/useSettingsCommand.js';
 import { useModelCommand } from './hooks/useModelCommand.js';
+import { useAddProviderCommand } from './hooks/useAddProviderCommand.js';
 import { useSlashCommandProcessor } from './hooks/slashCommandProcessor.js';
 import { useGeminiStream } from './hooks/useGeminiStream.js';
 import { useVim } from './hooks/vim.js';
@@ -136,6 +138,7 @@ describe('AppContainer State Management', () => {
   const mockedUseEditorSettings = useEditorSettings as Mock;
   const mockedUseSettingsCommand = useSettingsCommand as Mock;
   const mockedUseModelCommand = useModelCommand as Mock;
+  const mockedUseAddProviderCommand = useAddProviderCommand as Mock;
   const mockedUseSlashCommandProcessor = useSlashCommandProcessor as Mock;
   const mockedUseGeminiStream = useGeminiStream as Mock;
   const mockedUseVim = useVim as Mock;
@@ -210,6 +213,11 @@ describe('AppContainer State Management', () => {
       isModelDialogOpen: false,
       openModelDialog: vi.fn(),
       closeModelDialog: vi.fn(),
+    });
+    mockedUseAddProviderCommand.mockReturnValue({
+      isAddProviderDialogOpen: false,
+      openAddProviderDialog: vi.fn(),
+      closeAddProviderDialog: vi.fn(),
     });
     mockedUseSlashCommandProcessor.mockReturnValue({
       handleSlashCommand: vi.fn(),

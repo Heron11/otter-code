@@ -106,6 +106,12 @@ export type ContentGeneratorConfig = {
   // Context window size override. If set to a positive number, it will override
   // the automatic detection. Leave undefined to use automatic detection.
   contextWindowSize?: number;
+  /**
+   * When true (and `samplingParams.max_tokens` is not set), do not send `max_tokens`
+   * on OpenAI-compatible chat requests so the backend uses its own default/limit.
+   * Use for local servers (LM Studio, vLLM, etc.) where you want the API to decide.
+   */
+  deferMaxTokensToProvider?: boolean;
   // Custom HTTP headers to be sent with requests
   customHeaders?: Record<string, string>;
   // Extra body parameters to be merged into the request body

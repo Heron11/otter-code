@@ -236,6 +236,47 @@ describe('DefaultOpenAICompatibleProvider', () => {
       expect(result.max_tokens).toBe(32000);
     });
 
+    it('should omit max_tokens when deferMaxTokensToProvider is set and max_tokens not configured', () => {
+      const providerDeferred = new DefaultOpenAICompatibleProvider(
+        {
+          ...mockContentGeneratorConfig,
+          model: 'gpt-4',
+          deferMaxTokensToProvider: true,
+        } as ContentGeneratorConfig,
+        mockCliConfig,
+      );
+
+      const request: OpenAI.Chat.ChatCompletionCreateParams = {
+        model: 'gpt-4',
+        messages: [{ role: 'user', content: 'Hello' }],
+      };
+
+      const result = providerDeferred.buildRequest(request, 'prompt-id');
+
+      expect(result.max_tokens).toBeUndefined();
+    });
+
+    it('should still respect explicit max_tokens when deferMaxTokensToProvider is true', () => {
+      const providerDeferred = new DefaultOpenAICompatibleProvider(
+        {
+          ...mockContentGeneratorConfig,
+          model: 'gpt-4',
+          deferMaxTokensToProvider: true,
+        } as ContentGeneratorConfig,
+        mockCliConfig,
+      );
+
+      const request: OpenAI.Chat.ChatCompletionCreateParams = {
+        model: 'gpt-4',
+        messages: [{ role: 'user', content: 'Hello' }],
+        max_tokens: 500,
+      };
+
+      const result = providerDeferred.buildRequest(request, 'prompt-id');
+
+      expect(result.max_tokens).toBe(500);
+    });
+
     it('should cap max_tokens for known models to avoid API errors', () => {
       // Known models (GPT-4): user config is capped at model limit
       const request: OpenAI.Chat.ChatCompletionCreateParams = {

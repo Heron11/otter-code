@@ -27,6 +27,7 @@ export const MODEL_GENERATION_CONFIG_FIELDS = [
   'schemaCompliance',
   'reasoning',
   'contextWindowSize',
+  'deferMaxTokensToProvider',
   'customHeaders',
   'extra_body',
   'modalities',

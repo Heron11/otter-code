@@ -328,6 +328,10 @@
             "contextWindowSize": {
               "description": "Overrides the default context window size for the selected model. Use this setting when a provider's effective context limit differs from Qwen Code's default. This value defines the model's assumed maximum context capacity, not a per-request token limit.",
               "type": "number"
+            },
+            "deferMaxTokensToProvider": {
+              "description": "When true and max_tokens is not set in sampling params, omit max_tokens on OpenAI-compatible requests so the server uses its own default (recommended for many local APIs). When false or unset, the client applies a safe default cap.",
+              "type": "boolean"
             }
           }
         }

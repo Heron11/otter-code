@@ -110,6 +110,13 @@ vi.mock('../ui/commands/modelCommand.js', () => ({
     kind: 'BUILT_IN',
   },
 }));
+vi.mock('../ui/commands/addProviderCommand.js', () => ({
+  addProviderCommand: {
+    name: 'addprovider',
+    description: 'Add provider',
+    kind: 'BUILT_IN',
+  },
+}));
 
 describe('BuiltinCommandLoader', () => {
   let mockConfig: Config;

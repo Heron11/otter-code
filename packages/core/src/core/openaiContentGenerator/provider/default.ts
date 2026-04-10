@@ -139,6 +139,9 @@ export class DefaultOpenAICompatibleProvider
         // The backend may support larger limits than our default
         effectiveMaxTokens = userMaxTokens;
       }
+    } else if (this.contentGeneratorConfig.deferMaxTokensToProvider === true) {
+      // No user max_tokens: omit the field so OpenAI-compatible backends apply their own limit
+      return { ...request };
     } else {
       // User didn't configure, use conservative default:
       // min(model-specific limit, DEFAULT_OUTPUT_TOKEN_LIMIT)

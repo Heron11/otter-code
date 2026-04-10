@@ -21,6 +21,7 @@ import { EditorSettingsDialog } from './EditorSettingsDialog.js';
 import { TrustDialog } from './TrustDialog.js';
 import { PermissionsDialog } from './PermissionsDialog.js';
 import { ModelDialog } from './ModelDialog.js';
+import { AddProviderDialog } from './AddProviderDialog.js';
 import { ArenaStartDialog } from './arena/ArenaStartDialog.js';
 import { ArenaSelectDialog } from './arena/ArenaSelectDialog.js';
 import { ArenaStopDialog } from './arena/ArenaStopDialog.js';
@@ -239,6 +240,9 @@ export const DialogManager = ({
         />
       </Box>
     );
+  }
+  if (uiState.isAddProviderDialogOpen) {
+    return <AddProviderDialog onClose={uiActions.closeAddProviderDialog} />;
   }
   if (uiState.isModelDialogOpen) {
     return (

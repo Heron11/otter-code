@@ -88,6 +88,7 @@ interface SlashCommandProcessorActions {
   openExtensionsManagerDialog: () => void;
   openMcpDialog: () => void;
   openHooksDialog: () => void;
+  openAddProviderDialog: () => void;
 }
 
 /**
@@ -542,6 +543,9 @@ export const useSlashCommandProcessor = (
                       return { type: 'handled' };
                     case 'resume':
                       actions.openResumeDialog();
+                      return { type: 'handled' };
+                    case 'add-provider':
+                      actions.openAddProviderDialog();
                       return { type: 'handled' };
                     case 'extensions_manage':
                       actions.openExtensionsManagerDialog();

@@ -23,6 +23,33 @@ Otter Code is an open-source AI agent for the terminal. It helps you understand 
 
 Make sure you have Node.js 20 or later installed. Download it from [nodejs.org](https://nodejs.org/en/download).
 
+### One-command install (recommended)
+
+This mirrors the upstream “curl | bash” flow: it clones or updates the repo under `~/.local/share/otter-code`, runs `npm install`, `build`, `bundle`, and `npm install -g .` so `otter` is on your PATH.
+
+**Linux / macOS**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Heron11/otter-code/main/scripts/installation/install-otter.sh | bash
+```
+
+**Updates:** run the same command again. The script pulls the latest commit on the configured branch and rebuilds.
+
+You do **not** need to publish to the npm registry. The command above pulls from **GitHub**, builds locally, and installs the `otter` CLI globally. Re-run it anytime to update.
+
+**More options**
+
+- Custom branch or fork:  
+  `OTTER_BRANCH=my-branch OTTER_REPO=https://github.com/you/otter-code.git curl -fsSL https://raw.githubusercontent.com/Heron11/otter-code/main/scripts/installation/install-otter.sh | bash`
+- Uninstall (removes global package; optionally deletes the clone):  
+  `curl -fsSL https://raw.githubusercontent.com/Heron11/otter-code/main/scripts/installation/install-otter.sh | bash -s -- --uninstall`
+
+Environment: `OTTER_REPO`, `OTTER_BRANCH`, `OTTER_HOME`.
+
+**Optional — install from npm instead of GitHub:** only if you publish a package to the registry. Then:  
+`curl -fsSL https://raw.githubusercontent.com/Heron11/otter-code/main/scripts/installation/install-otter.sh | bash -s -- --npm`  
+(with `OTTER_NPM_PACKAGE` if the published name differs from the default).
+
 ### Build from source
 
 ```bash
@@ -30,8 +57,11 @@ git clone https://github.com/Heron11/otter-code.git
 cd otter-code
 npm install
 npm run build
+npm run bundle
 npm link
 ```
+
+The `otter` command runs the bundled `dist/cli.js`. After code changes, run `npm run bundle` (not only `npm run build`) so the global `otter` binary picks up new slash commands and UI.
 
 Then launch with:
 

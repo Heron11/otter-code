@@ -66,6 +66,7 @@ import { useAuthCommand } from './auth/useAuth.js';
 import { useEditorSettings } from './hooks/useEditorSettings.js';
 import { useSettingsCommand } from './hooks/useSettingsCommand.js';
 import { useModelCommand } from './hooks/useModelCommand.js';
+import { useAddProviderCommand } from './hooks/useAddProviderCommand.js';
 import { useArenaCommand } from './hooks/useArenaCommand.js';
 import { useApprovalModeCommand } from './hooks/useApprovalModeCommand.js';
 import { useResumeCommand } from './hooks/useResumeCommand.js';
@@ -536,6 +537,11 @@ export const AppContainer = (props: AppContainerProps) => {
     openModelDialog,
     closeModelDialog,
   } = useModelCommand();
+  const {
+    isAddProviderDialogOpen,
+    openAddProviderDialog,
+    closeAddProviderDialog,
+  } = useAddProviderCommand();
   const { activeArenaDialog, openArenaDialog, closeArenaDialog } =
     useArenaCommand();
 
@@ -579,6 +585,7 @@ export const AppContainer = (props: AppContainerProps) => {
       openEditorDialog,
       openSettingsDialog,
       openModelDialog,
+      openAddProviderDialog,
       openTrustDialog,
       openArenaDialog,
       openPermissionsDialog,
@@ -606,6 +613,7 @@ export const AppContainer = (props: AppContainerProps) => {
       openEditorDialog,
       openSettingsDialog,
       openModelDialog,
+      openAddProviderDialog,
       openArenaDialog,
       setDebugMessage,
       dispatchExtensionStateUpdate,
@@ -1746,6 +1754,7 @@ export const AppContainer = (props: AppContainerProps) => {
     !!loopDetectionConfirmationRequest ||
     isThemeDialogOpen ||
     isSettingsDialogOpen ||
+    isAddProviderDialogOpen ||
     isModelDialogOpen ||
     isTrustDialogOpen ||
     activeArenaDialog !== null ||
@@ -1800,6 +1809,7 @@ export const AppContainer = (props: AppContainerProps) => {
       debugMessage,
       quittingMessages,
       isSettingsDialogOpen,
+      isAddProviderDialogOpen,
       isModelDialogOpen,
       isFastModelMode,
       isTrustDialogOpen,
@@ -1906,6 +1916,7 @@ export const AppContainer = (props: AppContainerProps) => {
       debugMessage,
       quittingMessages,
       isSettingsDialogOpen,
+      isAddProviderDialogOpen,
       isModelDialogOpen,
       isFastModelMode,
       isTrustDialogOpen,
@@ -2017,6 +2028,7 @@ export const AppContainer = (props: AppContainerProps) => {
       exitEditorDialog,
       closeSettingsDialog,
       closeModelDialog,
+      closeAddProviderDialog,
       openArenaDialog,
       closeArenaDialog,
       handleArenaModelsSelected,
@@ -2075,6 +2087,7 @@ export const AppContainer = (props: AppContainerProps) => {
       exitEditorDialog,
       closeSettingsDialog,
       closeModelDialog,
+      closeAddProviderDialog,
       openArenaDialog,
       closeArenaDialog,
       handleArenaModelsSelected,

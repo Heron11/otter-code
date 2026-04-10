@@ -156,6 +156,7 @@ describe('useSlashCommandProcessor', () => {
           openEditorDialog: vi.fn(),
           openSettingsDialog: vi.fn(),
           openModelDialog: mockOpenModelDialog,
+          openAddProviderDialog: vi.fn(),
           openTrustDialog: vi.fn(),
           openPermissionsDialog: vi.fn(),
           openApprovalModeDialog: vi.fn(),
@@ -166,6 +167,9 @@ describe('useSlashCommandProcessor', () => {
           addConfirmUpdateExtensionRequest: vi.fn(),
           openSubagentCreateDialog: vi.fn(),
           openAgentsManagerDialog: vi.fn(),
+          openExtensionsManagerDialog: vi.fn(),
+          openMcpDialog: vi.fn(),
+          openHooksDialog: vi.fn(),
         },
         new Map(), // extensionsUpdateState
         true, // isConfigInitialized
@@ -930,6 +934,7 @@ describe('useSlashCommandProcessor', () => {
             openEditorDialog: vi.fn(),
             openSettingsDialog: vi.fn(),
             openModelDialog: vi.fn(),
+            openAddProviderDialog: vi.fn(),
             openTrustDialog: vi.fn(),
             openPermissionsDialog: vi.fn(),
             openApprovalModeDialog: vi.fn(),
@@ -940,6 +945,9 @@ describe('useSlashCommandProcessor', () => {
             addConfirmUpdateExtensionRequest: vi.fn(),
             openSubagentCreateDialog: vi.fn(),
             openAgentsManagerDialog: vi.fn(),
+            openExtensionsManagerDialog: vi.fn(),
+            openMcpDialog: vi.fn(),
+            openHooksDialog: vi.fn(),
           },
           new Map(), // extensionsUpdateState
           true, // isConfigInitialized

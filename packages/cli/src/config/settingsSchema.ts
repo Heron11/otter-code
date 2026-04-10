@@ -815,6 +815,17 @@ const SETTINGS_SCHEMA = {
             parentKey: 'generationConfig',
             showInDialog: false,
           },
+          deferMaxTokensToProvider: {
+            type: 'boolean',
+            label: 'Defer max_tokens to provider',
+            category: 'Generation Configuration',
+            requiresRestart: false,
+            default: undefined,
+            description:
+              'When true and max_tokens is not set in sampling params, omit max_tokens on OpenAI-compatible requests so the server uses its own default (recommended for many local APIs). When false or unset, the client applies a safe default cap.',
+            parentKey: 'generationConfig',
+            showInDialog: false,
+          },
         },
       },
     },
