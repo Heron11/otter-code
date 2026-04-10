@@ -164,8 +164,9 @@ install_from_git() {
   log_info "Bundling CLI…"
   (cd "${OTTER_HOME}" && npm run bundle)
 
-  log_info "Installing globally (npm install -g .)…"
-  (cd "${OTTER_HOME}" && npm install -g .)
+  log_info "Installing globally (npm install -g . --ignore-scripts)…"
+  log_info "Skipping lifecycle scripts: global install cannot run prepare (workspaces + husky)."
+  (cd "${OTTER_HOME}" && npm install -g . --ignore-scripts)
 
   log_ok "Otter Code is ready. Run: otter --version"
 }
