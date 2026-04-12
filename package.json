@@ -1,5 +1,5 @@
 {
-  "name": "@qwen-code/qwen-code",
+  "name": "@heronsamuel/otter-code",
   "version": "0.14.1",
   "engines": {
     "node": ">=20.0.0"
@@ -15,7 +15,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/QwenLM/qwen-code.git"
+    "url": "git+https://github.com/Heron11/otter-code.git"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "config": {
     "sandboxImageUri": "ghcr.io/qwenlm/qwen-code:0.14.1"

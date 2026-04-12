@@ -13,7 +13,7 @@
 #   OTTER_REPO       Git URL (default: https://github.com/Heron11/otter-code.git)
 #   OTTER_BRANCH     Branch or tag (default: main)
 #   OTTER_HOME       Clone directory (default: ~/.local/share/otter-code)
-#   OTTER_NPM_PACKAGE npm package for --npm (default: @heron11/otter-code)
+#   OTTER_NPM_PACKAGE npm package for --npm (default: @heronsamuel/otter-code)
 
 set -euo pipefail
 
@@ -25,7 +25,7 @@ fi
 OTTER_REPO="${OTTER_REPO:-https://github.com/Heron11/otter-code.git}"
 OTTER_BRANCH="${OTTER_BRANCH:-main}"
 OTTER_HOME="${OTTER_HOME:-${XDG_DATA_HOME:-$HOME/.local/share}/otter-code}"
-OTTER_NPM_PACKAGE="${OTTER_NPM_PACKAGE:-@heron11/otter-code}"
+OTTER_NPM_PACKAGE="${OTTER_NPM_PACKAGE:-@heronsamuel/otter-code}"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -96,6 +96,7 @@ done
 uninstall_otter() {
   log_info "Removing global Otter Code package (if present)…"
   npm uninstall -g "${OTTER_NPM_PACKAGE}" 2>/dev/null || true
+  npm uninstall -g "@heronsamuel/otter-code" 2>/dev/null || true
   npm uninstall -g "@qwen-code/qwen-code" 2>/dev/null || true
   if command -v otter >/dev/null 2>&1; then
     log_warn "The 'otter' command is still on PATH; check npm global bin and shell config."

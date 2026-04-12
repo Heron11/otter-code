@@ -184,6 +184,7 @@ const distPackageJson = {
     '@teddyzhu/clipboard-win32-arm64-msvc': '0.0.5',
   },
   engines: rootPackageJson.engines,
+  publishConfig: rootPackageJson.publishConfig || { access: 'public' },
 };
 
 fs.writeFileSync(

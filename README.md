@@ -23,7 +23,28 @@ Otter Code is an open-source AI agent for the terminal. It helps you understand 
 
 Make sure you have Node.js 20 or later installed. Download it from [nodejs.org](https://nodejs.org/en/download).
 
-### One-command install (recommended)
+### Install from npm (recommended when published)
+
+The bundled CLI is published as **`@heronsamuel/otter-code`** (npm username scope). After it exists on the [npm registry](https://www.npmjs.com/), install globally:
+
+```bash
+npm install -g @heronsamuel/otter-code
+```
+
+**Updates:** `npm update -g @heronsamuel/otter-code` (or install a specific version with `@heronsamuel/otter-code@<version>`).
+
+**Publishing** (maintainers): from the repo root, after a normal dev install:
+
+```bash
+npm ci
+npm run bundle
+npm run prepare:package
+cd dist && npm publish --access public
+```
+
+Use the npm account that owns **`@heronsamuel`** (your username scope) and run `npm login` first. Publishing requires **2FA** (or a granular token with publish permissions) on npm. For GitHub Actions, add an **Automation** token as the **`NPM_TOKEN`** repository secret; the [Release workflow](.github/workflows/release.yml) runs `npm publish` from `dist/` when you trigger a release on `Heron11/otter-code`.
+
+### One-command install from Git (no npm registry)
 
 This mirrors the upstream “curl | bash” flow: it clones or updates the repo under `~/.local/share/otter-code`, runs `npm install`, `build`, `bundle`, and `npm install -g .` so `otter` is on your PATH.
 
@@ -35,20 +56,17 @@ curl -fsSL https://raw.githubusercontent.com/Heron11/otter-code/main/scripts/ins
 
 **Updates:** run the same command again. The script pulls the latest commit on the configured branch and rebuilds.
 
-You do **not** need to publish to the npm registry. The command above pulls from **GitHub**, builds locally, and installs the `otter` CLI globally. Re-run it anytime to update.
-
 **More options**
 
 - Custom branch or fork:  
   `OTTER_BRANCH=my-branch OTTER_REPO=https://github.com/you/otter-code.git curl -fsSL https://raw.githubusercontent.com/Heron11/otter-code/main/scripts/installation/install-otter.sh | bash`
 - Uninstall (removes global package; optionally deletes the clone):  
   `curl -fsSL https://raw.githubusercontent.com/Heron11/otter-code/main/scripts/installation/install-otter.sh | bash -s -- --uninstall`
+- **Install from npm via the same script:**  
+  `curl -fsSL https://raw.githubusercontent.com/Heron11/otter-code/main/scripts/installation/install-otter.sh | bash -s -- --npm`  
+  (Uses `OTTER_NPM_PACKAGE`, default `@heronsamuel/otter-code`.)
 
 Environment: `OTTER_REPO`, `OTTER_BRANCH`, `OTTER_HOME`.
-
-**Optional — install from npm instead of GitHub:** only if you publish a package to the registry. Then:  
-`curl -fsSL https://raw.githubusercontent.com/Heron11/otter-code/main/scripts/installation/install-otter.sh | bash -s -- --npm`  
-(with `OTTER_NPM_PACKAGE` if the published name differs from the default).
 
 ### Build from source
 
