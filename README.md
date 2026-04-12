@@ -3,6 +3,15 @@
 [![License](https://img.shields.io/github/license/Heron11/otter-code.svg)](./LICENSE)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen.svg)](https://nodejs.org/)
 
+```
+ ██████╗ ████████╗████████╗███████╗██████╗
+██╔═══██╗╚══██╔══╝╚══██╔══╝██╔════╝██╔══██╗
+██║   ██║   ██║      ██║   █████╗  ██████╔╝
+██║   ██║   ██║      ██║   ██╔══╝  ██╔══██╗
+╚██████╔╝   ██║      ██║   ███████╗██║  ██║
+ ╚═════╝    ╚═╝      ╚═╝   ╚══════╝╚═╝  ╚═╝
+```
+
 **An open-source AI agent that lives in your terminal.**
 
 </div>
