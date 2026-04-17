@@ -20,18 +20,20 @@ const mockedUseKeypress = vi.mocked(useKeypress);
 // Mock i18n module
 vi.mock('../../../i18n/index.js', () => ({
   t: vi.fn((key: string, options?: { count?: string }) => {
-    // Handle pluralization
-    if (key === '{{count}} hook configured' && options?.count) {
-      return `${options.count} hook configured`;
+    const count = options?.count;
+    const hasCount = count !== undefined && count !== '';
+    // Handle pluralization (count may be "0" — must not use `&& options?.count` alone)
+    if (key === '{{count}} hook configured' && hasCount) {
+      return `${count} hook configured`;
     }
-    if (key === '{{count}} hooks configured' && options?.count) {
-      return `${options.count} hooks configured`;
+    if (key === '{{count}} hooks configured' && hasCount) {
+      return `${count} hooks configured`;
     }
-    if (key === '{{count}} configured hook' && options?.count) {
-      return `${options.count} configured hook`;
+    if (key === '{{count}} configured hook' && hasCount) {
+      return `${count} configured hook`;
     }
-    if (key === '{{count}} configured hooks' && options?.count) {
-      return `${options.count} configured hooks`;
+    if (key === '{{count}} configured hooks' && hasCount) {
+      return `${count} configured hooks`;
     }
     // Handle interpolation for disabled message
     if (
@@ -168,7 +170,7 @@ describe('HooksManagementDialog', () => {
       await new Promise((resolve) => setTimeout(resolve, 100));
 
       const output = lastFrame();
-      // Should show 0 hooks configured when no hooks are configured
+      // Hook events exist but zero configs → plural copy with count 0
       expect(output).toContain('0 hooks configured');
 
       unmount();

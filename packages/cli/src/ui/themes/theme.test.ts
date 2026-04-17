@@ -88,9 +88,9 @@ describe('themeManager.loadCustomThemes', () => {
     themeManager.loadCustomThemes({ 'Legacy Custom Theme': legacyTheme });
     const result = themeManager.getTheme('Legacy Custom Theme')!;
 
-    // Should use DEFAULT_THEME (QwenDark) values for missing fields
-    expect(result.colors.DiffAdded).toBe('#AAD94C');
-    expect(result.colors.DiffRemoved).toBe('#F26D78');
+    // Should use DEFAULT_THEME (QwenDark / Otter palette) values for missing fields
+    expect(result.colors.DiffAdded).toBe('#3D2000');
+    expect(result.colors.DiffRemoved).toBe('#430000');
     expect(result.colors.AccentBlue).toBe(legacyTheme.AccentBlue);
     expect(result.name).toBe(legacyTheme.name);
   });
